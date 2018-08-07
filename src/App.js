@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Spinner from './components/Spinner/Spinner';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
@@ -24,6 +25,7 @@ const particlesOptions = {
 const initialState = {
   input: '',
   imageURL: '',
+  loading: false,
   box: {},
   route: 'signin',
   isSignedIn: false,
@@ -50,6 +52,11 @@ class App extends Component {
       rightCol: width - (clarifaiFace.right_col * width),
       bottomRow: height - (clarifaiFace.bottom_row * height)
     }
+  }
+
+  setLoading = () => {
+    this.setState({loading: !this.state.loading})
+    // console.log('fuck')
   }
 
   onRouteChange = (route) => {
@@ -115,6 +122,7 @@ class App extends Component {
     return (
       <div className="App">
         <Particles className='particles' params={particlesOptions} />
+        <Spinner show={this.state.loading} />
         <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
         {route === 'home' 
           ? 
@@ -127,8 +135,8 @@ class App extends Component {
           </div>
           : (
             route === 'signin' ?
-            <Signin loadUser={this.loadUser} name={this.state.user.name} onRouteChange={this.onRouteChange} />
-            : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+            <Signin setLoading={this.setLoading} loadUser={this.loadUser} name={this.state.user.name} onRouteChange={this.onRouteChange} />
+            : <Register  setLoading={this.setLoading} loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
           )
         }
       </div>

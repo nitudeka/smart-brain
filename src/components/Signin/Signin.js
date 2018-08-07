@@ -15,6 +15,7 @@ class Signin extends React.Component {
   }
 
   onSubmitSignin = () => {
+    this.props.setLoading();
     fetch('https://immense-waters-65123.herokuapp.com/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -23,16 +24,17 @@ class Signin extends React.Component {
         password: this.state.signinPassword
       })
     })
-      .then(response => response.json())
+    .then(response => response.json())
       .then(user => {
         if (user.id) {
+          this.props.setLoading();
           this.props.loadUser(user);
           this.props.onRouteChange('home');
         }
       })
-  }
-  
-  render () {
+    }
+    
+    render () {
     const { onRouteChange } = this.props;
     return (
       <article className="center br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5">
