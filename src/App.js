@@ -7,8 +7,7 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-particles-js';
-import Signin from './components/Signin/Signin';
-import Register from './components/Register/Register';
+import Form from './components/Form/Form';
 
 const particlesOptions = {
   particles: {
@@ -56,7 +55,6 @@ class App extends Component {
 
   setLoading = () => {
     this.setState({loading: !this.state.loading})
-    // console.log('fuck')
   }
 
   onRouteChange = (route) => {
@@ -133,11 +131,7 @@ class App extends Component {
               onInputChange={this.onInputChange} />
             <FaceRecognition box={box} imageURL={imageURL} />
           </div>
-          : (
-            route === 'signin' ?
-            <Signin setLoading={this.setLoading} loadUser={this.loadUser} name={this.state.user.name} onRouteChange={this.onRouteChange} />
-            : <Register  setLoading={this.setLoading} loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-          )
+          : <Form loadUser={this.loadUser} route={this.state.route} onRouteChange={this.onRouteChange} setLoading={this.setLoading} />
         }
       </div>
     );
