@@ -15,7 +15,7 @@ const particlesOptions = {
       value: 130,
       density: {
         enable: true,
-        value_area: 800
+        value_area: 1250
       }
     }
   }
@@ -124,7 +124,7 @@ class App extends Component {
         <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
         {route === 'home' 
           ? 
-          <div>
+          <div className='home'>
             <Logo />
             <Rank name={this.state.user.name} entries={this.state.user.entries} />
             <ImageLinkForm onButtonSubmit={this.onButtonSubmit }

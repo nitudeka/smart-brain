@@ -3,6 +3,7 @@ import './Form.css';
 import Input from './Input/Input';
 import Signin from './Signin/Signin';
 import Register from './Register/Register';
+import FormValidation from './FormValidation';
 
 class Form extends Component {
   state = {
@@ -72,25 +73,6 @@ class Form extends Component {
     isValid: false
   }
 
-  validateFormElement = (value, rules) => {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid
-    }
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid
-    }
-    return isValid;
-  }
-
   inputChangedHandler = (event, inputElement, element) => {
     let updatedState = {};
     if (element === this.state.signin) {
@@ -101,7 +83,7 @@ class Form extends Component {
     const updatedElement = {...updatedState[inputElement]};
     updatedElement.value = event.target.value;
     updatedElement.focused = true;
-    updatedElement.valid = this.validateFormElement(event.target.value, updatedElement.validation);
+    updatedElement.valid = FormValidation(event.target.value, updatedElement.validation);
     updatedState[inputElement] = updatedElement;
     let formIsValid = true;
     for (inputElement in updatedState) {
@@ -116,6 +98,9 @@ class Form extends Component {
   
   render () {
     let route = this.props.route;
+    if (this.props.route === 'signout') {
+      route = 'register'
+    }
     let form = null;
 
     form = Object.keys(this.state[route]).map(element => {
