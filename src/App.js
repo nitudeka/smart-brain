@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 import Spinner from './components/Spinner/Spinner';
 import Navigation from './components/Navigation/Navigation';
@@ -22,9 +23,6 @@ const particlesOptions = {
 }
 
 const initialState = {
-  input: '',
-  imageURL: '',
-  loading: false,
   box: {},
   route: 'signin',
   isSignedIn: false,
@@ -53,10 +51,6 @@ class App extends Component {
     }
   }
 
-  setLoading = () => {
-    this.setState({loading: !this.state.loading})
-  }
-
   onRouteChange = (route) => {
     if (route === 'signout') {
       this.setState(initialState);
@@ -70,17 +64,12 @@ class App extends Component {
     this.setState({box: box});
   }
 
-  onInputChange = (event) => {
-    this.setState({input: event.target.value});
-  }
-
   onButtonSubmit = () => {
-    this.setState({imageURL: this.state.input});
     fetch('https://immense-waters-65123.herokuapp.com/imageUrl', {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          input: this.state.input
+          input: this.props.input
         })
       })
       .then(response => response.json())
@@ -115,12 +104,12 @@ class App extends Component {
   }
 
   render() {
-    const { isSignedIn, imageURL, box, route } = this.state;
+    const { isSignedIn, box, route } = this.state;
     
     return (
       <div className="App">
         <Particles className='particles' params={particlesOptions} />
-        <Spinner show={this.state.loading} />
+        <Spinner show={this.props.loading} />
         <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
         {route === 'home' 
           ? 
@@ -128,14 +117,28 @@ class App extends Component {
             <Logo />
             <Rank name={this.state.user.name} entries={this.state.user.entries} />
             <ImageLinkForm onButtonSubmit={this.onButtonSubmit }
-              onInputChange={this.onInputChange} />
-            <FaceRecognition box={box} imageURL={imageURL} />
+              onInputChange={(event) => this.props.onInputChange(event.target.value)} />
+            <FaceRecognition box={box} imageURL={this.props.input} />
           </div>
-          : <Form loadUser={this.loadUser} route={this.state.route} onRouteChange={this.onRouteChange} setLoading={this.setLoading} />
+          : <Form loadUser={this.loadUser} route={this.state.route} onRouteChange={this.onRouteChange} setLoading={this.props.setLoading} />
         }
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    input: state.input,
+    loading: state.loading
+  }
+}
+
+const mapDispatchTopProps = dispatch => {
+  return {
+    onInputChange: (input) => dispatch({type: 'INPUT', input: input}),
+    setLoading: () => dispatch({type: 'LOADING'})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchTopProps)(App);
