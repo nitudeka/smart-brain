@@ -23,6 +23,9 @@ const particlesOptions = {
 }
 
 const initialState = {
+  input: '',
+  imageURL: '',
+  loading: false,
   box: {},
   route: 'signin',
   isSignedIn: false,
@@ -60,10 +63,6 @@ class App extends Component {
     this.setState({route: route});
   }
 
-  displayFaceBox = (box) => {
-    this.setState({box: box});
-  }
-
   onButtonSubmit = () => {
     fetch('https://immense-waters-65123.herokuapp.com/imageUrl', {
         method: 'post',
@@ -88,7 +87,7 @@ class App extends Component {
             })
             .catch(console.log);
         }
-        this.displayFaceBox(this.calculateFaceLocation(response));
+        this.props.faceLocationBox(this.calculateFaceLocation(response));
       })
       .catch(err => console.log(err));
   }
@@ -104,7 +103,7 @@ class App extends Component {
   }
 
   render() {
-    const { isSignedIn, box, route } = this.state;
+    const { isSignedIn, route } = this.state;
     
     return (
       <div className="App">
@@ -118,7 +117,7 @@ class App extends Component {
             <Rank name={this.state.user.name} entries={this.state.user.entries} />
             <ImageLinkForm onButtonSubmit={this.onButtonSubmit }
               onInputChange={(event) => this.props.onInputChange(event.target.value)} />
-            <FaceRecognition box={box} imageURL={this.props.input} />
+            <FaceRecognition box={this.props.box} imageURL={this.props.input} />
           </div>
           : <Form loadUser={this.loadUser} route={this.state.route} onRouteChange={this.onRouteChange} setLoading={this.props.setLoading} />
         }
@@ -130,14 +129,16 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     input: state.input,
-    loading: state.loading
+    loading: state.loading,
+    box: state.box
   }
 }
 
 const mapDispatchTopProps = dispatch => {
   return {
     onInputChange: (input) => dispatch({type: 'INPUT', input: input}),
-    setLoading: () => dispatch({type: 'LOADING'})
+    setLoading: () => dispatch({type: 'LOADING'}),
+    faceLocationBox: (box) => dispatch({type: 'FACE_LOCATION_BOX', box: box})
   }
 }
 

@@ -25,6 +25,11 @@ export const reducer = (state=initialState, action={}) => {
         ...state,
         loading: !state.loading
       }
+    case 'FACE_LOCATION_BOX':
+      return {
+        ...state,
+        box: action.box
+      }
     default:
       return state;
   }
