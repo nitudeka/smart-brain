@@ -1,145 +1,146 @@
 import React, { Component } from 'react';
 import './Form.css';
+
 import Input from './Input/Input';
-import Signin from './Signin/Signin';
-import Register from './Register/Register';
-import FormValidation from './FormValidation';
+import Signin from './SigninForm/Signin';
+import Register from './RegisterForm/Register';
 
 class Form extends Component {
   state = {
     signin: {
       email: {
-        label: 'Your email',
-        type: 'text',
-        placeholder: 'Your email',
+        type: 'email',
+        placeholder: 'Your Email',
+        label: 'Your Email',
         value: '',
+        valid: false,
+        focused: false,
         validation: {
           required: true,
           isEmail: true
-        },
-        valid: false,
-        focused: false
+        }
       },
       password: {
-        label: 'Your password',
         type: 'password',
-        placeholder: 'Your password',
+        placeholder: 'Your Password',
+        label: 'Your Password',
         value: '',
+        valid: false,
+        focused: false,
         validation: {
           required: true,
           minLength: 6
-        },
-        valid: false,
-        focused: false
-      },
+        }
+      }
     },
     register: {
       name: {
-        label: 'Your name',
         type: 'text',
-        placeholder: 'Your name',
+        placeholder: 'Your Name',
+        label: 'Your Name',
         value: '',
+        valid: false,
+        focused: false,
         validation: {
           required: true
-        },
-        valid: false,
-        focused: false
+        }
       },
       email: {
-        label: 'Your email',
-        type: 'text',
-        placeholder: 'Your email',
+        type: 'email',
+        placeholder: 'Your Email',
+        label: 'Your Email',
         value: '',
+        valid: false,
+        focused: false,
         validation: {
           required: true,
           isEmail: true
-        },
-        valid: false,
-        focused: false
+        }
       },
       password: {
-        label: 'Your password',
         type: 'password',
-        placeholder: 'Your password',
+        placeholder: 'Your Password',
+        label: 'Your Password',
         value: '',
+        valid: false,
+        focused: false,
         validation: {
           required: true,
           minLength: 6
-        },
-        valid: false,
-        focused: false
-      },
+        }
+      }
     },
-    isValid: false
+    formIsValid: false
   }
 
-  inputChangedHandler = (event, inputElement, element) => {
-    let updatedState = {};
-    if (element === this.state.signin) {
-      updatedState = {...this.state.signin};
-    } else if (element === this.state.register) {
-      updatedState = {...this.state.register};
+  validateForm = (value, rules) => {
+    let isValid = true;
+    if (rules.required) {
+      isValid = value.length > 0 && isValid;
     }
-    const updatedElement = {...updatedState[inputElement]};
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid
+    }
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value) && isValid;
+    }
+    return isValid;
+  }
+
+  onInputChange = (event, element) => {
+    const updatedState = {...this.state};
+    const elementState = {...updatedState[this.props.form]};
+    const updatedElement = elementState[element];
+    let isValid = this.validateForm(event.target.value, updatedElement.validation);
     updatedElement.value = event.target.value;
+    updatedElement.valid = isValid;
     updatedElement.focused = true;
-    updatedElement.valid = FormValidation(event.target.value, updatedElement.validation);
-    updatedState[inputElement] = updatedElement;
+    elementState[element] = updatedElement;
     let formIsValid = true;
-    for (inputElement in updatedState) {
-      formIsValid = updatedState[inputElement].valid && formIsValid;
-    }
-    if (element === this.state.signin) {
-      this.setState({signin: updatedState, isValid: formIsValid});
-    } else if (element === this.state.register) {
-      this.setState({register: updatedState, isValid: formIsValid});
-    }
+    Object.keys(this.state[this.props.form]).map(elements => {
+      return formIsValid = this.state[this.props.form][elements].valid && formIsValid;
+    })
+    this.setState({ signin: elementState, formIsValid: formIsValid });
   }
   
   render () {
-    let route = this.props.route;
-    if (this.props.route === 'signout') {
-      route = 'register'
-    }
-    let form = null;
-
-    form = Object.keys(this.state[route]).map(element => {
+    const form = Object.keys(this.state[this.props.form]).map(element => {
       return (
         <Input
+          focused={this.state[this.props.form][element].focused}
+          isValid={this.state[this.props.form][element].valid}
+          onInputChange={(event) => this.onInputChange(event, element)}
           key={element}
-          type={this.state[route][element].type}
-          placeholder={this.state[route][element].placeholder}
-          invalid={this.state[route][element].focused ? !this.state[route][element].valid : null}
-          changed={(event) => this.inputChangedHandler(event, element, this.state[route])}
-          label={this.state[route][element].label} />
-        )
-      })
+          type={this.state[this.props.form][element].type}
+          placeholder={this.state[this.props.form][element].placeholder}
+          label={this.state[this.props.form][element].label}
+        />
+      )
+    })
 
-    if (this.props.route === 'signin') {
-      return (
-        <Signin
-          Signin={form}
-          setLoading = {this.props.setLoading}
-          loadUser = {this.props.loadUser}
-          onRouteChange = {this.props.onRouteChange}
-          invalid={!this.state.isValid}
-          email = {this.state.signin.email.value}
-          password = {this.state.signin.password.value}
-        />
-      )
+    if (this.props.form === 'signin') {
+      return <Signin
+        formIsValid={this.state.formIsValid} form={form} 
+        setLoading = {this.props.setLoading}
+        loadUser = {this.props.loadUser}
+        onRouteChange = {this.props.onRouteChange}
+        invalid={!this.state.isValid}
+        email = {this.state.signin.email.value}
+        password = {this.state.signin.password.value}
+      />
+    } else if (this.props.form === 'register') {
+      return <Register
+        formIsValid={this.state.formIsValid} form={form}
+        setLoading = {this.props.setLoading}
+        loadUser = {this.props.loadUser}
+        onRouteChange = {this.props.onRouteChange}
+        invalid={!this.state.isValid}
+        email = {this.state.signin.email.value}
+        password = {this.state.signin.password.value}
+      />
     } else {
-      return (
-        <Register
-          Register={form}
-          setLoading = {this.props.setLoading}
-          loadUser = {this.props.loadUser}
-          onRouteChange = {this.props.onRouteChange}
-          invalid={!this.state.isValid}
-          email = {this.state.register.email.value}
-          password = {this.state.register.password.value}
-          name = {this.state.register.name.value}
-        />
-      )
+      return null
     }
   }
 }

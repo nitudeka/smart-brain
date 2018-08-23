@@ -19,14 +19,14 @@ const Signin = (props) => {
           props.onRouteChange('home');
         }
       })
-    }
+  }
   
   return (
     <div className='form-container'>
       <div className='form'>
-        <h2 className='form-heading'>Signin</h2>
-        {props.Signin}
-        <button disabled={props.invalid} onClick={onSubmitSignin} className='form-btn'>Signin</button>
+        <h2 className='form__heading'>Signin</h2>
+        {props.form}
+        <button disabled={!props.formIsValid} onClick={onSubmitSignin} className='form__button'>Signin</button>
       </div>
     </div>
   )

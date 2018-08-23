@@ -119,7 +119,7 @@ class App extends Component {
               onInputChange={(event) => this.props.onInputChange(event.target.value)} />
             <FaceRecognition box={this.props.box} imageURL={this.props.input} />
           </div>
-          : <Form loadUser={this.loadUser} route={this.state.route} onRouteChange={this.onRouteChange} setLoading={this.props.setLoading} />
+          : <Form loadUser={this.loadUser} form={this.state.route} onRouteChange={this.onRouteChange} setLoading={this.props.setLoading} />
         }
       </div>
     );

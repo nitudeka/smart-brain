@@ -26,9 +26,9 @@ const Register = (props) => {
   return (
     <div className='form-container'>
       <div className='form'>
-        <h2 className='form-heading'>Register</h2>
-        {props.Register}
-        <button disabled={props.invalid} onClick={onSubmitRegister} className='form-btn'>Register</button>
+        <h2 className='form__heading'>Register</h2>
+        {props.form}
+        <button onClick={onSubmitRegister} disabled={!props.formIsValid} className='form__button'>Register</button>
       </div>
     </div>
   )

@@ -1,24 +1,20 @@
 import React from 'react';
-import './Input.css';
 
 const Input = (props) => {
   let styles = {}
-  if (props.invalid) {
-    styles = {borderBottom: '3px solid #ff7730'}
+  if (props.focused) {
+    if (props.isValid) {
+      styles = {borderBottom: '3px solid #55c57a'}
+    }
+    if (props.isValid === false) {
+      styles = {borderBottom: '3px solid #ff7730'}
+    }
   }
-  if (props.invalid === false) {
-    styles = {borderBottom: '3px solid #55c57a'}
-  }
-
+  
   return (
-    <div className='input-div'>
-      <input
-        className='input'
-        style={styles}
-        type={props.type}
-        placeholder={props.placeholder}
-        onChange={props.changed} />
-      <label className='input-label'>{props.label}</label>
+    <div className='form__component'>
+      <input style={styles} onChange={props.onInputChange} type={props.type} placeholder={props.placeholder} className='form__input' />
+      <label className='form__label'>{props.label}</label>
     </div>
   )
 }
