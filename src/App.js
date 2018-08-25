@@ -43,6 +43,10 @@ const initialState = {
 class App extends Component {
   state = initialState;
 
+  signout = () => {
+    this.setState({isSignedIn: false})
+  }
+
   changeLoginState = () => {
     this.setState({isSignedIn: true});
   }
@@ -107,7 +111,7 @@ class App extends Component {
         <div className="App">
           <Particles className='particles' params={particlesOptions} />
           <Spinner show={this.props.loading} />
-          <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
+          <Navigation signout={this.signout} onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
           <Route exact path='/' render={() => (
             this.state.isSignedIn ? <Redirect to='/home' /> : <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />
           )} />
