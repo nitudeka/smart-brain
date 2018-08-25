@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './App.css';
 import Spinner from './components/Spinner/Spinner';
@@ -42,6 +42,10 @@ const initialState = {
 
 class App extends Component {
   state = initialState;
+
+  changeLoginState = () => {
+    this.setState({isSignedIn: true});
+  }
 
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -105,6 +109,9 @@ class App extends Component {
           <Spinner show={this.props.loading} />
           <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
           <Route exact path='/' render={() => (
+            this.state.isSignedIn ? <Redirect to='/home' /> : <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />
+          )} />
+          <Route path='/home' render={() => (
             <div className='home'>
               <Logo />
               <Rank name={this.state.user.name} entries={this.state.user.entries} />
@@ -113,8 +120,8 @@ class App extends Component {
               <FaceRecognition box={this.props.box} imageURL={this.props.input} />
             </div>
           )} />
-          <Route path='/signin' render={() => <Signin loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
-          <Route path='/register' render={() => <Register loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
+          <Route path='/signin' render={() => <Signin isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
+          <Route path='/register' render={() => <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
         </div>
       </BrowserRouter>
     );

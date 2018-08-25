@@ -62,6 +62,8 @@ class Register extends Component {
         if (user.id) {
           this.props.setLoading();
           this.props.loadUser(user);
+          this.props.isSignedIn();
+          this.props.history.push('/');
         }
       }
     )

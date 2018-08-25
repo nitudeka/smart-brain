@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Input from '../Input/Input';
 import FormValidation from '../FormValidation';
 import '../Form.css';
@@ -49,11 +50,14 @@ class Signin extends Component {
         if (user.id) {
           this.props.setLoading();
           this.props.loadUser(user);
+          this.props.isSignedIn();
+          this.props.history.push('/')
         }
       })
     }
 
   onInputChange = (event, element) => {
+    console.log(this.props)
     const updatedState = {...this.state.form};
     const updatedElement = {...updatedState[element]};
     updatedElement.value = event.target.value;
@@ -94,4 +98,4 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+export default withRouter(Signin);
