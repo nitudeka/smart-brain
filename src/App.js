@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './App.css';
 import Spinner from './components/Spinner/Spinner';
@@ -8,7 +9,8 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-particles-js';
-import Form from './components/Form/Form';
+import Signin from './components/Form/Signin/Signin';
+import Register from './components/Form/Register/Register';
 
 const particlesOptions = {
   particles: {
@@ -54,15 +56,6 @@ class App extends Component {
     }
   }
 
-  onRouteChange = (route) => {
-    if (route === 'signout') {
-      this.setState(initialState);
-    } else if (route === 'home') {
-      this.setState({isSignedIn: true});
-    }
-    this.setState({route: route});
-  }
-
   onButtonSubmit = () => {
     fetch('https://immense-waters-65123.herokuapp.com/imageUrl', {
         method: 'post',
@@ -103,25 +96,27 @@ class App extends Component {
   }
 
   render() {
-    const { isSignedIn, route } = this.state;
+    const { isSignedIn } = this.state;
     
     return (
-      <div className="App">
-        <Particles className='particles' params={particlesOptions} />
-        <Spinner show={this.props.loading} />
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
-        {route === 'home' 
-          ? 
-          <div className='home'>
-            <Logo />
-            <Rank name={this.state.user.name} entries={this.state.user.entries} />
-            <ImageLinkForm onButtonSubmit={this.onButtonSubmit }
-              onInputChange={(event) => this.props.onInputChange(event.target.value)} />
-            <FaceRecognition box={this.props.box} imageURL={this.props.input} />
-          </div>
-          : <Form loadUser={this.loadUser} form={this.state.route} onRouteChange={this.onRouteChange} setLoading={this.props.setLoading} />
-        }
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Particles className='particles' params={particlesOptions} />
+          <Spinner show={this.props.loading} />
+          <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
+          <Route exact path='/' render={() => (
+            <div className='home'>
+              <Logo />
+              <Rank name={this.state.user.name} entries={this.state.user.entries} />
+              <ImageLinkForm onButtonSubmit={this.onButtonSubmit }
+                onInputChange={(event) => this.props.onInputChange(event.target.value)} />
+              <FaceRecognition box={this.props.box} imageURL={this.props.input} />
+            </div>
+          )} />
+          <Route path='/signin' render={() => <Signin loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
+          <Route path='/register' render={() => <Register loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
+        </div>
+      </BrowserRouter>
     );
   }
 }

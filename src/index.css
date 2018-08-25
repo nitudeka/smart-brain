@@ -4,6 +4,10 @@ body {
   font-family: 'Courier New', Courier, monospace;
   color: #eeeeee;
   background-color: #212121;
+  background-image: url(./assets/img/bg-image.jpg);
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
 }
 
 button {
@@ -15,4 +19,9 @@ button {
   display: flex;
   flex-flow: column;
   justify-content: center;
+}
+
+a {
+  color: inherit;
+  outline: none;
 }

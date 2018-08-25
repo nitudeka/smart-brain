@@ -1,18 +1,21 @@
 import React from 'react';
 import './Navigation.css';
+import { NavLink } from 'react-router-dom';
 
-const Navigation = ({ onRouteChange, isSignedIn }) => {
+const Navigation = ({ isSignedIn }) => {
     if (isSignedIn) {
       return (
         <nav className='navigation'>
-          <p onClick={() => onRouteChange('signout')} className='f3 link dim underline pa3 pointer'>Sign Out</p>
+          <NavLink className='navigation-link' to='/signin'>Sign Out</NavLink>
         </nav>
       )
     } else {
       return (
         <nav className='navigation'>
-          <p onClick={() => onRouteChange('signin')} className='f3 link dim underline pa3 pointer'>Sign In</p>
-          <p onClick={() => onRouteChange('register')} className='f3 link dim underline pa3 pointer'>Register</p>
+          <div className='navigation-container'>
+            <NavLink className='navigation-link navigation-link-1' to='/signin'>Signin</NavLink>
+            <NavLink className='navigation-link navigation-link-2' to='/register'>Register</NavLink>
+          </div>
         </nav>
       )
     }

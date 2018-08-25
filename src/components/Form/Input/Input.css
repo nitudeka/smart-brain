@@ -1,0 +1,40 @@
+.input-container {
+  width: 90%;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  margin: 8px 0;
+}
+
+.form-input {
+  width: 100%;
+  padding: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #eeeeee;
+  color: #212121;
+  border: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  transition: all .2s;
+  border-bottom: 3px solid transparent;
+}
+
+.form-input:focus {
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.input-label {
+  margin-left: 13px;
+  margin-top: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #bdbdbd;
+  transform: translateY(0);
+  transition: all .2s;
+}
+
+.form-input:placeholder-shown + .input-label {
+  transform: translateY(-44px);
+  opacity: 0;
+  visibility: hidden;
+}
