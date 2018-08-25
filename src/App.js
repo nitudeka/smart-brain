@@ -112,6 +112,7 @@ class App extends Component {
             this.state.isSignedIn ? <Redirect to='/home' /> : <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />
           )} />
           <Route path='/home' render={() => (
+            this.state.isSignedIn ?
             <div className='home'>
               <Logo />
               <Rank name={this.state.user.name} entries={this.state.user.entries} />
@@ -119,6 +120,7 @@ class App extends Component {
                 onInputChange={(event) => this.props.onInputChange(event.target.value)} />
               <FaceRecognition box={this.props.box} imageURL={this.props.input} />
             </div>
+            : <Redirect to='/register' />
           )} />
           <Route path='/signin' render={() => <Signin isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
           <Route path='/register' render={() => <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />

@@ -57,7 +57,6 @@ class Signin extends Component {
     }
 
   onInputChange = (event, element) => {
-    console.log(this.props)
     const updatedState = {...this.state.form};
     const updatedElement = {...updatedState[element]};
     updatedElement.value = event.target.value;
