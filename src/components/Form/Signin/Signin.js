@@ -32,6 +32,7 @@ class Signin extends Component {
         focused: false
       }
     },
+    errorMessage: null,
     formIsValid: false
   }
 
@@ -47,8 +48,11 @@ class Signin extends Component {
     })
     .then(response => response.json())
       .then(user => {
+        this.props.setLoading();
+        if (user === 'wrong credentials') {
+          this.setState({errorMessage: <p>Oops! something is not right, check your credentials</p>})
+        }
         if (user.id) {
-          this.props.setLoading();
           this.props.loadUser(user);
           this.props.isSignedIn();
           this.props.history.push('/')
@@ -88,6 +92,7 @@ class Signin extends Component {
         <div className='form'>
           <div className='form-header'>
             <h3 className='form-heading'>Signin</h3>
+            {this.state.errorMessage}
           </div>
           {form}
           <button disabled={!this.state.formIsValid} className='form-button' onClick={this.onSubmitSignin}>Signin</button>

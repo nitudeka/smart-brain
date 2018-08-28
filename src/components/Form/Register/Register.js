@@ -43,6 +43,7 @@ class Register extends Component {
         focused: false
       }
     },
+    errorMessage: null,
     formIsValid: false
   }
 
@@ -56,11 +57,13 @@ class Register extends Component {
         password: this.state.form.password.value,
         name: this.state.form.name.value
       })
-    })
-      .then(response => response.json())
+    }).then(response => response.json())
       .then(user => {
+        this.props.setLoading();
+        if (user === 'unable to register') {
+          this.setState({errorMessage: <p>Please try a different email address</p>})
+        }
         if (user.id) {
-          this.props.setLoading();
           this.props.loadUser(user);
           this.props.isSignedIn();
           this.props.history.push('/');
@@ -101,6 +104,7 @@ class Register extends Component {
         <div className='form'>
           <div className='form-header'>
             <h3 className='form-heading'>Register</h3>
+            {this.state.errorMessage}
           </div>
           {form}
           <button disabled={!this.state.formIsValid} className='form-button' onClick={this.onSubmitRegister}>Register</button>

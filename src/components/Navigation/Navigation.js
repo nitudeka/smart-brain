@@ -6,13 +6,13 @@ const Navigation = (props) => {
   return (
     props.isSignedIn ?
       <nav className='navigation'>
-        <NavLink className='navigation-link navigation-link-1' to='/signin' onClick={props.signout}>Signout</NavLink>
+          <NavLink className='navigation-link signout-link active' to='/signin' onClick={props.signout}>Signout</NavLink>
       </nav>
     :
     <nav className='navigation'>
       <div className='navigation-container'>
-        <NavLink className='navigation-link navigation-link-1' to='/signin'>Signin</NavLink>
-        <NavLink className='navigation-link navigation-link-2' to='/register'>Register</NavLink>
+        <NavLink className='navigation-link signin-link' to='/signin'>Signin</NavLink>
+        <NavLink className='navigation-link register-link' to='/register'>Register</NavLink>
       </div>
     </nav>
   )
