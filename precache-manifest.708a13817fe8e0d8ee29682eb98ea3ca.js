@@ -8,23 +8,23 @@ self.__precacheManifest = [
     "url": "/smart_brain/static/js/runtime~main.e79918ea.js"
   },
   {
-    "revision": "77ff42b31c6dd99e9802",
-    "url": "/smart_brain/static/js/main.77ff42b3.chunk.js"
+    "revision": "aff7a0993c291dbeb7a8",
+    "url": "/smart_brain/static/js/main.aff7a099.chunk.js"
   },
   {
-    "revision": "7eb718b758b4968eaaaa",
-    "url": "/smart_brain/static/js/1.7eb718b7.chunk.js"
+    "revision": "26e6cb7cea916f4ff371",
+    "url": "/smart_brain/static/js/1.26e6cb7c.chunk.js"
   },
   {
-    "revision": "77ff42b31c6dd99e9802",
+    "revision": "aff7a0993c291dbeb7a8",
     "url": "/smart_brain/static/css/main.a04cc115.chunk.css"
   },
   {
-    "revision": "7eb718b758b4968eaaaa",
+    "revision": "26e6cb7cea916f4ff371",
     "url": "/smart_brain/static/css/1.9f120a32.chunk.css"
   },
   {
-    "revision": "db76605d03ce8ff1580562e9b7d87fc4",
+    "revision": "3713b6883e7de4f4532c987e4bd52481",
     "url": "/smart_brain/index.html"
   }
 ];
