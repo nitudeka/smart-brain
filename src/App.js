@@ -112,10 +112,10 @@ class App extends Component {
           <Particles className='particles' params={particlesOptions} />
           <Spinner show={this.props.loading} />
           <Navigation signout={this.signout} onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
-          <Route exact path='/' render={() => (
-            this.state.isSignedIn ? <Redirect to='/home' /> : <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />
+          <Route exact path='/smart_brain/' render={() => (
+            this.state.isSignedIn ? <Redirect to='/smart_brain/home' /> : <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />
           )} />
-          <Route path='/home' render={() => (
+          <Route path='/smart_brain/home' render={() => (
             this.state.isSignedIn ?
             <div className='home'>
               <Logo />
@@ -126,8 +126,8 @@ class App extends Component {
             </div>
             : <Redirect to='/register' />
           )} />
-          <Route path='/signin' render={() => <Signin isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
-          <Route path='/register' render={() => <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
+          <Route path='/smart_brain/signin' render={() => <Signin isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
+          <Route path='/smart_brain/register' render={() => <Register isSignedIn={this.changeLoginState} loadUser={this.loadUser} setLoading={this.props.setLoading} />} />
         </div>
       </BrowserRouter>
     );

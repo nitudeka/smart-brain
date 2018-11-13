@@ -55,7 +55,7 @@ class Signin extends Component {
         if (user.id) {
           this.props.loadUser(user);
           this.props.isSignedIn();
-          this.props.history.push('/')
+          this.props.history.push('/smart_brain/')
         }
       })
     }
